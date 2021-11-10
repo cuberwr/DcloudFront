@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>pan</title>
+    <script src="../js/vue.global.js"></script>
+    <script src="../js/file-md5.js"></script>
+    <link rel="stylesheet" href="../css/niwu.css">
+</head>
+
+<body>
+
+    <div id="drag">
+        <button :class="{active:top}" @click="op"><img :src="top?'../svg/topactive.svg':'../svg/top.svg'"
+                alt=""></button>
+        <button @click="hide"><img src="../svg/hide.svg" alt=""></button>
+        <button @click="maxx"><img :src="max?'../svg/max.svg':'../svg/min.svg'" alt=""></button>
+        <button id="off" @click="off"><img src="../svg/off.svg" alt=""></button>
+    </div>
+
+
+    <div id="file">
+        <div class="pan">
+            <div v-for="(item, index) in node['&~path']" :key="index" class="pan-item" @click="nav(index)">{{item}} /
+            </div>
+        </div>
+        <div class="file" @click.right="rclick($event,node)">
+            <div class="item" v-if="node?node.hasOwnProperty('&~path')?node['&~path'].length!=1:false:false"
+                @click="back">
+                <img src="../svg/par.svg">
+                <span>返回</span>
+            </div>
+            <div v-for="(item,index) in node" :key="index" @click.native="open(item)" @click.right.stop="rclick($event,item)">
+                <div class="item" v-if="item['&~type']">
+                    <img :src="svg(item)">
+                    <span>{{index.replace(/&~/g, '.')}}</span>
+                </div>
+            </div>
+        </div>
+        <div v-show="rmenu" class="rmenu" @click="hide" @click.right="hide">
+            <div ref="menu" class="menu">
+                <div v-if="r.file">
+                    <div class="options"  @click.native.stop="download(current)">下载</div>
+                    <div class="options">预览</div>
+                    <div class="options">复制</div>
+                    <div class="options">分享</div>
+                    <div class="options">删除</div>
+                </div>
+                <div v-if="r.floder">
+                    <div class="options" @click.native.stop="download">下载</div>
+                    <div class="options" @click="upload">上传</div>
+                    <div class="options">复制</div>
+                    <div class="options">粘贴</div>
+                    <div class="options">分享</div>
+                    <div class="options">删除</div>
+                </div>
+            </div>
+        </div>
+        <transition name="slide-fade">
+            <div v-if="alert.active" id="alert" class="item">
+                <h3>{{alert.msg}}</h3>
+            </div>
+        </transition>
+        <transition name="slide-fade">
+            <div class="transformManager" v-if="true">
+                <div v-for="(item, index) in transformProgress" :key="index">
+                   <div class="progress-text">
+                    <span class="progress-text">{{index}}</span>
+                    <span class="progress-text">{{Math.floor((item.uploaded*100)/item.size)}}%</span>
+                   </div>
+                    <div class="neumorphic-progress">
+                        <div class="neumorphic-progress__back"></div>
+                        <div class="neumorphic-progress__line" :style="{ width: (item.uploaded*390)/item.size+'px' }"></div>
+                    </div>  
+                </div>
+            </div>
+        </transition>
+    </div>
+
+
+
+    <script src=../js/chunk-vendors.1e0a4aba.js> </script> <script src=../js/index.452fe427.js> </script> <script
+        src="../js/render-main.js" defer="defer"></script>
+
+</body>
+
+<style>
+
+</style>
+
+</html>

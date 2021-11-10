@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+
+<head>
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <title>pan</title>
+    <script src="../js/vue.global.js"></script>
+    <link rel="stylesheet" href="../css/niwu.css">
+</head>
+
+<body>
+    <div id="drag">
+        <button :class="{active:top}" @click="op"><img :src="top?'../svg/topactive.svg':'../svg/top.svg'"
+                alt=""></button>
+        <button @click="hide"><img src="../svg/hide.svg" alt=""></button>
+        <button @click="maxx"><img :src="max?'../svg/max.svg':'../svg/min.svg'" alt=""></button>
+        <button id="off" @click="off"><img src="../svg/off.svg" alt=""></button>
+    </div>
+
+    <div id="login">
+        <transition name="slide-fade">
+            <div v-if="alert.active" id="alert" class="item">
+                <h3>{{alert.msg}}</h3>
+            </div>
+        </transition>
+        <transition name="slide-fade" @after-leave="afterLeave">
+            <form v-if="page=='login'">
+                <div class="segment">
+                    <h1>{{pageName}}</h1>
+                </div>
+                <label>
+                    <input type="text" placeholder="用户名/邮箱" v-model="authName" />
+                </label>
+                <label>
+                    <input type="password" placeholder="密码" v-model="user.passwd" />
+                </label>
+                <label>
+                    <button class="green" type="button" @click="login">
+                        <h3>登录</h3>
+                    </button>
+                </label>
+                <div class="label">
+                    <button class="red half" type="button" @click="toReg">注册账号</button>
+                    <button class="red half labelr" type="button" @click="toChangepwd">修改密码</button>
+                </div>
+                <button class="blue" type="button" @click="toCheckLogin">动态验证登录</button>
+            </form>
+        </transition>
+        <transition name="slide-fade" @after-leave="afterLeave">
+            <form v-if="page=='reg'">
+                <div class="segment">
+                    <h1>{{pageName}}</h1>
+                </div>
+                <label>
+                    <input type="text" placeholder="用户名" v-model="user.name" />
+                </label>
+<!--                 <label>
+                    <input type="text" placeholder="手机号" v-model="user.phone" />
+                </label> -->
+                <label>
+                    <input type="text" placeholder="邮箱" v-model="user.mail" />
+                </label>
+                <label>
+                    <input type="password" placeholder="密码" v-model="user.passwd" />
+                </label>
+                <label>
+                    <input type="password" placeholder="重复密码" v-model="repasswd" />
+                </label>
+                <label>
+                    <button class="green" type="button" @click="reg">
+                        <h3>注册账号</h3>
+                    </button>
+                </label>
+                <div class="label">
+                    <button class="red half" type="button" @click="toLogin">返回登录</button>
+                    <button class="red half labelr" type="button" @click="toChangepwd">修改密码</button>
+                </div>
+                <button class="blue" type="button" @click="toCheckLogin">动态验证登录</button>
+            </form>
+        </transition>
+        <transition name="slide-fade" @after-leave="afterLeave">
+            <form v-if="page=='changepwd'">
+                <div class="segment">
+                    <h1>{{pageName}}</h1>
+                </div>
+                <label>
+                    <input type="text" placeholder="用户名" v-model="user.name" />
+                </label>
+<!--                 <label>
+                    <input type="text" placeholder="手机号" v-model="user.phone" />
+                </label> -->
+                <label>
+                    <input type="text" placeholder="邮箱" v-model="user.mail" />
+                </label>
+                <label>
+                    <input type="password" placeholder="密码" v-model="user.passwd" />
+                </label>
+                <label>
+                    <input type="password" placeholder="重复密码" v-model="repasswd" />
+                </label>
+                <label>
+                    <button class="green" type="button" @click="changepwd">
+                        <h3>修改密码</h3>
+                    </button>
+                </label>
+                <div class="label">
+                    <button class="red half" type="button" @click="toLogin">返回登录</button>
+                    <button class="red half labelr" type="button" @click="toReg">注册账号</button>
+                </div>
+                <button class="blue" type="button" @click="toCheckLogin">动态验证登录</button>
+            </form>
+        </transition>
+        <transition name="slide-fade" @after-leave="afterLeave">
+            <form v-if="page=='checkLogin'">
+                <div class="segment">
+                    <h1>{{pageName}}</h1>
+                </div>
+                <label>
+                    <input type="text" placeholder="用户名/邮箱" v-model="authName" />
+                </label>
+                <label>
+                    <button class="green" type="button" @click="checkLogin">
+                        <h3>发送验证信息</h3>
+                    </button>
+                </label>
+                <div class="label">
+                    <button class="red half" type="button" @click="toLogin">返回登录</button>
+                    <button class="red half labelr" type="button" @click="toReg">注册账号</button>
+                </div>
+                <button class="blue" type="button" @click="toChangepwd">修改密码</button>
+            </form>
+        </transition>
+
+    </div>
+
+
+    <!--         <div id="file">
+            <div v-for="(item,index) in node" :key="index">
+                <div class="item" v-if="item['&~type']">
+                    <img :src="svg">
+                    <span>{{item.name}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="rout">
+            <div v-if="current">
+                {{}}
+            </div>
+        </div> -->
+
+
+    <script src=../js/chunk-vendors.1e0a4aba.js> </script> <script src=../js/index.452fe427.js> </script> <script
+        src="../js/render-login.js" defer="defer"></script>
+    <script src="../js/md5.js"></script>
+
+</body>
+
+<style>
+
+</style>
+
+</html>
